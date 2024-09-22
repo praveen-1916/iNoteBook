@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function NoteState(props) {
 
+    const [progress, setProgress] = useState(0);
     const [alert, setAlert] = useState(null);
     let navigate = useNavigate();
 
@@ -22,28 +23,16 @@ function NoteState(props) {
                 symbolId: 'exclamation-triangle-fill'
             });
         }
-
         setTimeout(() => {
             setAlert(null);
         }, 3000);
     }
 
-    const MyWebpage = {
-        URL_END_POINT: 'http://localhost:4000/',
-        METHODS: {
-            GET_ALL_NOTES: 'notes/fetchallnotes',
-            ADD_NOTE: 'notes/addnotes',
-            UPDATE_NOTE: 'notes/updatenotes/',
-            DELETE_NOTE: 'notes/deletenotes/',
-            LOGIN: 'auth/login',
-            REGISTER: 'auth/createuser',
 
-        }
-    }
     const [notes, setNotes] = useState([]);
 
     const fetchAllNotes = async () => {
-        const fetchNotes = MyWebpage.URL_END_POINT + MyWebpage.METHODS.GET_ALL_NOTES;
+        const fetchNotes = process.env.REACT_APP_URL_END_POINT + process.env.REACT_APP_GET_ALL_NOTES;
         const response = await fetch(fetchNotes, {
             method: "GET",
             headers: {
@@ -52,12 +41,12 @@ function NoteState(props) {
             },
         });
         const data = await response.json();
-        setNotes(data)
-        console.log(data);
+        setNotes(data);
     }
 
     const addNote = async (noteDetails) => {
-        const addNotes = MyWebpage.URL_END_POINT + MyWebpage.METHODS.ADD_NOTE;
+        setProgress(0);
+        const addNotes = process.env.REACT_APP_URL_END_POINT + process.env.REACT_APP_ADD_NOTE;
         const response = await fetch(addNotes, {
             method: "POST",
             headers: {
@@ -66,28 +55,33 @@ function NoteState(props) {
             },
             body: JSON.stringify(noteDetails),
         });
+        setProgress(50);
         const data = await response.json();
+        setProgress(100);
         displayAlert(data);
         fetchAllNotes();
     }
 
     const deleteNote = async (noteId) => {
-        const deletenotes = MyWebpage.URL_END_POINT + MyWebpage.METHODS.DELETE_NOTE + noteId;
+        setProgress(0);
+        const deletenotes = process.env.REACT_APP_URL_END_POINT + process.env.REACT_APP_DELETE_NOTE + noteId;
         const response = await fetch(deletenotes, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 "authToken": localStorage.getItem('token'),
-
             },
         });
+        setProgress(50);
         const data = await response.json();
+        setProgress(100);
         displayAlert(data);
         fetchAllNotes();
     }
 
     const editNote = async (editNoteDetails, noteId) => {
-        const updatenotes = MyWebpage.URL_END_POINT + MyWebpage.METHODS.UPDATE_NOTE + noteId;
+        setProgress(0);
+        const updatenotes = process.env.REACT_APP_URL_END_POINT + process.env.REACT_APP_UPDATE_NOTE + noteId;
         const response = await fetch(updatenotes, {
             method: "PUT",
             headers: {
@@ -96,13 +90,16 @@ function NoteState(props) {
             },
             body: JSON.stringify(editNoteDetails),
         });
+        setProgress(50);
         const data = await response.json();
+        setProgress(100);
         displayAlert(data);
         fetchAllNotes();
     }
 
     const userLogin = async (userDetails) => {
-        const login = MyWebpage.URL_END_POINT + MyWebpage.METHODS.LOGIN;
+        setProgress(0);
+        const login = process.env.REACT_APP_URL_END_POINT + process.env.REACT_APP_LOGIN;
         const response = await fetch(login, {
             method: "POST",
             headers: {
@@ -110,7 +107,9 @@ function NoteState(props) {
             },
             body: JSON.stringify(userDetails),
         });
+        setProgress(50);
         const data = await response.json();
+        setProgress(100);
         displayAlert(data);
         if (data.success) {
             localStorage.setItem("token", data.authToken);
@@ -120,7 +119,8 @@ function NoteState(props) {
 
 
     const userRegistration = async (userDetails) => {
-        const createUser = MyWebpage.URL_END_POINT + MyWebpage.METHODS.REGISTER;
+        setProgress(0);
+        const createUser = process.env.REACT_APP_URL_END_POINT + process.env.REACT_APP_REGISTER;
         const response = await fetch(createUser, {
             method: "POST",
             headers: {
@@ -128,13 +128,36 @@ function NoteState(props) {
             },
             body: JSON.stringify(userDetails)
         });
+        setProgress(50);
         const data = await response.json();
+        setProgress(100);
         displayAlert(data);
+    }
+
+    const [userInfo, setUserInfo] = useState({
+        name: '',
+        email: ''
+    })
+
+    const getUserData = async () => {
+        setProgress(0);
+        const getUser = process.env.REACT_APP_URL_END_POINT + process.env.REACT_APP_GET_USER;
+        const response = await fetch(getUser, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "authToken": localStorage.getItem('token'),
+            },
+        });
+        setProgress(50);
+        const data = await response.json();
+        setUserInfo(data.userData);
+        setProgress(100);
     }
 
 
     return (
-        <NotesContext.Provider value={{ notes, alert, fetchAllNotes, addNote, deleteNote, editNote, userLogin, userRegistration }}>
+        <NotesContext.Provider value={{ notes, alert, progress, fetchAllNotes, addNote, deleteNote, editNote, userLogin, userRegistration, getUserData, userInfo }}>
             {props.children}
         </NotesContext.Provider>
     )

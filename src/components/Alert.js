@@ -26,18 +26,9 @@ function Alert() {
 
                 {alert && <div className={`alert alert-${alert.type} d-flex align-items-center alertAnimation`} role="alert">
                     <svg className="bi flex-shrink-0 me-2" role="img" aria-label={`${captalize(alert.type)}:`}><use xlinkHref={`#${alert.symbolId}`} /></svg>
-                    <strong>{alert.msg}. </strong>
+                    <strong>{alert.msg} </strong>
                 </div>}
 
-                {/* <div className='alert alert-success' role="alert">
-                    <strong>{alert.msg}. </strong>
-                </div> */}
-                {/* <div className="alert alert-danger d-flex align-items-center" role="alert">
-                    <svg className="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
-                    <div>
-                        An example danger alert with an icon
-                    </div>
-                </div> */}
             </div>
 
         </>

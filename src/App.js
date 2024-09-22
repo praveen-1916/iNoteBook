@@ -8,6 +8,8 @@ import Alert from './components/Alert'
 import NoteState from './context/NoteState';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import UserAccount from './components/UserAccount';
+
 
 function App() {
 
@@ -22,6 +24,7 @@ function App() {
             <Route exact path='/about' element={<About />} />
             <Route exact path='/login' element={<Login />} />
             <Route exact path='/register' element={<SignUp />} />
+            <Route exact path='/UserData' element={<UserAccount />} />
           </Routes>
         </NoteState>
       </Router>

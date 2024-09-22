@@ -14,9 +14,6 @@ router.post('/createuser', [
     body('email', 'Please enter a valid email!').isEmail(),
     body('password', 'Password contains atleast 5 characters!').isLength({ min: 5 })
 ], async (req, res) => {
-    // const user = User(req.body);
-    // user.save();
-    // res.send(req.body);
     // if any errors occurs result then send erros to response
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -34,7 +31,6 @@ router.post('/createuser', [
                 req.body.password = hashPassword;
                 const userData = await User(req.body);
                 userData.save();
-                // console.log(userData);
                 const data = {
                     user: {
                         id: userData.id
@@ -44,13 +40,6 @@ router.post('/createuser', [
                 // console.log(authToken);
                 res.json({ authToken, success: true, message: 'User created Successfully.' });
             }
-
-            // let salt = await bcrypt.genSalt(10);
-            // let hashPassword = await bcrypt.hash(req.body.password, salt);
-            // req.body.password = hashPassword;
-            // const userData = await User(req.body)
-            // userData.save().then(data => res.json(data))
-            //     .catch(err => res.json({ error: 'The email is already taken. Try with another one!', message: err.message }));
         }
         catch (error) {
             res.status(400).json({ success: false, errorMsg: 'Internal server error!', message: error });
@@ -96,10 +85,9 @@ router.post('/login', [
 //ROUTE 3:Get user details when login is success with a getuser end point 
 router.get('/getuser', fetchUser, async (req, res) => {
     try {
-        // console.log(req.user)
         const userId = req.user.id;
         const userData = await User.findById(userId).select("-password");
-        res.send({ success: false, userData });
+        res.json({ userData });
     } catch (error) {
         res.status(400).json({ success: false, errorMsg: 'Internal server error!', message: error })
     }

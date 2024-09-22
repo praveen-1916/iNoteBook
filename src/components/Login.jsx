@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import NotesContext from '../context/NotesContext';
+import { Link } from 'react-router-dom';
 
 function Login() {
 
@@ -55,7 +56,10 @@ function Login() {
                         <input type="checkbox" onClick={showPass} className="form-check-input text-primary" id="exampleCheck1" />
                         <label className="form-check-label" htmlFor="exampleCheck1">{inputPass.showHideText}</label>
                     </div>
-                    <button type="submit" className="btn btn-primary">Login</button>
+                    <div className='d-flex gap-3 align-items-center'>
+                        <button type="submit" className="btn btn-primary">Login</button>
+                        <p className='m-0'>Don't have an account? <Link className="link-primary link-opacity-75 link-opacity-100-hover link-offset-3 link-underline-opacity-0 link-underline-opacity-100-hover" to="/register">Sign Up</Link></p>
+                    </div>
                 </form>
             </div>
         </div>

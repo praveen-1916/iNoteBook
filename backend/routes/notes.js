@@ -29,7 +29,7 @@ router.post('/addnotes', fetchUser, [
         try {
             const note = new Notes({ title, description, tag, user: req.user.id });
             await note.save();
-            res.json({ success: true, message: "Note Added Successfully" });
+            res.json({ success: true, message: "Note Added Successfully." });
         } catch (error) {
             res.status(500).json({ success: false, errorMsg: 'Internal server error!', message: error });
         }
@@ -43,12 +43,12 @@ router.put('/updatenotes/:id', fetchUser, async (req, res) => {
 
         let note = await Notes.findById(req.params.id);
         if (!note) {
-            res.status(404).json({ success: false, errorMsg: "Notes not found" });
+            res.status(404).json({ success: false, errorMsg: "Notes not found!" });
         } else {
             try {
                 if (note.user.toString() === req.user.id) {
                     note = await Notes.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
-                    res.json({ success: true, message: "Note updated successully" });
+                    res.json({ success: true, message: "Note updated successully." });
                 } else {
                     res.status(400).json({ success: false, errorMsg: 'Your not allowed!' });
                 }
@@ -69,14 +69,14 @@ router.delete('/deletenotes/:id', fetchUser, async (req, res) => {
     try {
         let note = await Notes.findById(req.params.id);
         if (!note) {
-            res.status(404).json({ success: false, errorMsg: "Notes not found" });
+            res.status(404).json({ success: false, errorMsg: "Notes not found!" });
         } else {
             try {
                 if (note.user.toString() === req.user.id) {
                     note = await Notes.findByIdAndDelete(req.params.id);
-                    res.json({ success: true, message: "Note deleted successfully" });
+                    res.json({ success: true, message: "Note deleted successfully." });
                 } else {
-                    res.status(400).json({ success: false, errorMsg: 'Your not allowed' });
+                    res.status(400).json({ success: false, errorMsg: 'Your not allowed!' });
                 }
             } catch (error) {
                 res.status(500).json({ success: false, errorMsg: 'Internal server error!', message: error });

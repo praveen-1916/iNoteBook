@@ -9,6 +9,8 @@ const port = 4000;
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
+
+//middleware
 app.use(express.json());
 app.use(cors());
 

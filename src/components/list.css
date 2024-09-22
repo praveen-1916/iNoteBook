@@ -1,0 +1,16 @@
+*{
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.list-group{
+    /* --bs-list-group-border-color: var(--bs-border-color); */
+    --bs-list-group-border-width: 0 !important;
+    --bs-list-group-border-radius: 0 !important;
+    --bs-list-group-bg: #f8f9fa !important;
+    cursor: pointer;
+}
+
+p{
+    margin-bottom: 0 !important;
+    letter-spacing: 0.5px;
+}
