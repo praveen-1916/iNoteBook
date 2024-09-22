@@ -37,7 +37,6 @@ router.post('/createuser', [
                     }
                 }
                 const authToken = jwt.sign(data, secretCode);
-                // console.log(authToken);
                 res.json({ authToken, success: true, message: 'User created Successfully.' });
             }
         }
